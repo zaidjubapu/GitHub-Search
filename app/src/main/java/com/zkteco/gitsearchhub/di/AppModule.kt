@@ -1,7 +1,9 @@
 package com.zkteco.gitsearchhub.di
 
 import android.annotation.SuppressLint
+import android.app.Application
 import android.content.Context
+import android.content.res.Resources
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 
@@ -118,6 +120,11 @@ class AppModule {
     @Provides
     fun provideNetworkAdapter(): NetworkResponseAdapterFactory {
         return NetworkResponseAdapterFactory()
+    }
+
+    @Provides
+    fun provideResources(application: Application): Resources {
+        return application.resources
     }
 
 

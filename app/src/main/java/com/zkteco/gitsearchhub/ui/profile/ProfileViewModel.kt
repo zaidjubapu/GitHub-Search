@@ -1,5 +1,6 @@
 package com.zkteco.gitsearchhub.ui.profile
 
+import android.content.res.Resources
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -9,6 +10,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.zkteco.gitsearchhub.R
 import com.zkteco.gitsearchhub.data.model.GitHubRepo
 import com.zkteco.gitsearchhub.data.model.GitHubUserDetails
 import com.zkteco.gitsearchhub.data.repository.SearchUserRepo
@@ -22,7 +24,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val searchUserRepo: SearchUserRepo
+    private val searchUserRepo: SearchUserRepo,
+    private val resources: Resources
 ) : ViewModel() {
 
     private val _userDetails = MutableLiveData<GitHubUserDetails>()
@@ -51,13 +54,13 @@ class ProfileViewModel @Inject constructor(
                         }
                     }
                     is NetworkResponse.ApiError -> {
-                        Log.e("ProfileViewModel", "API Error: ${response.body}")
+                        Log.e("ProfileViewModel", resources.getString(R.string.api_error, response.body))
                     }
                     is NetworkResponse.NetworkError -> {
-                        Log.e("ProfileViewModel", "Network Error")
+                        Log.e("ProfileViewModel", resources.getString(R.string.network_error))
                     }
                     is NetworkResponse.UnknownError -> {
-                        Log.e("ProfileViewModel", "Unknown Error: ${response.error?.message}")
+                        Log.e("ProfileViewModel", resources.getString(R.string.unknown_error, response.error?.message))
                     }
                 }
             } catch (e: Exception) {

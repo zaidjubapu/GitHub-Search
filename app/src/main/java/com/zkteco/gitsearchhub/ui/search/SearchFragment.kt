@@ -2,11 +2,14 @@ package com.zkteco.gitsearchhub.ui.search
 
 import androidx.fragment.app.viewModels
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,7 +18,6 @@ import com.zkteco.gitsearchhub.databinding.FragmentSearchBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-
 
 
 @AndroidEntryPoint
@@ -29,58 +31,69 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentSearchBinding.bind(view)
 
+        setupRecyclerView()
+        observeToastMessages()
+        observeSearchResults()
+        onTextChanged()
+
+
+    }
+
+    private fun onTextChanged(){
+        binding.searchEditText.addTextChangedListener { editable ->
+            val query = editable.toString().trim()
+            if (query.isNotEmpty()) {
+                searchViewModel.updateSearchQuery(query)
+            }
+        }
+    }
+
+    private fun setupRecyclerView() {
         adapter = SearchPagingAdapter { user ->
             val action = SearchFragmentDirections.actionSearchFragmentToProfileFragment(user)
             findNavController().navigate(action)
         }
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+    }
 
-        lifecycleScope.launch {
-            searchViewModel.searchQuery.collectLatest { query ->
-                if (query.isNotEmpty()) {
-                    observeSearchResults(query)
-                }
-            }
-        }
-
-        binding.searchEditText.addTextChangedListener { editable ->
-            val query = editable.toString().trim()
-            if (query.isNotEmpty()) {
-                searchViewModel.updateSearchQuery(query)  // Update the query
+    private fun observeToastMessages() {
+        searchViewModel.toastMessage.observe(viewLifecycleOwner) { message ->
+            message?.let {
+                showToast(it)
             }
         }
     }
-    private fun observeSearchResults(query: String) {
+
+    private fun observeSearchResults() {
         lifecycleScope.launch {
-            searchViewModel.searchUsers(query) {
-                Toast.makeText(requireContext(), "No records found", Toast.LENGTH_SHORT).show()
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                searchViewModel.searchResults.collectLatest { pagingData ->
+                    adapter.submitData(pagingData)
+                    observeLoadState()
+                }
+            }
+        }
+    }
 
-            }.collectLatest { pagingData ->
-                adapter.submitData(pagingData)
-
-                adapter.loadStateFlow.collect { loadState ->
-                    when (loadState.refresh) {
-                        is LoadState.Error -> {
-                            val error = (loadState.refresh as LoadState.Error).error
-                            Toast.makeText(
-                                requireContext(),
-                                "Error: ${error.localizedMessage}",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                        else -> {
-                        }
+    private fun observeLoadState() {
+        lifecycleScope.launch {
+            adapter.loadStateFlow.collect { loadState ->
+                when (loadState.refresh) {
+                    is LoadState.Error -> {
+                        val error = (loadState.refresh as LoadState.Error).error
+                        showToast("Error: ${error.localizedMessage}")
+                    }
+                    else -> {
+                        Log.d("Pagination", "Load State: ${loadState.refresh}")
                     }
                 }
             }
         }
     }
 
-
-
-
-
-
+    private fun showToast(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    }
 }
 

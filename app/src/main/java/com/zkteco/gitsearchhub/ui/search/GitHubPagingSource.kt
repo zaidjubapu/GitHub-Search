@@ -1,9 +1,7 @@
 package com.zkteco.gitsearchhub.ui.search
 
-import android.provider.Settings.Global.getString
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.zkteco.gitsearchhub.R
 import com.zkteco.gitsearchhub.data.model.GitHubUser
 import com.zkteco.gitsearchhub.data.repository.SearchUserRepo
 import com.zkteco.gitsearchhub.network.NetworkResponse
@@ -11,7 +9,7 @@ import com.zkteco.gitsearchhub.network.NetworkResponse
 class GitHubPagingSource(
     private val searchUserRepo: SearchUserRepo,
     private val query: String,
-    private val onNoRecordsFound: () -> Unit
+    private val onNoRecordsFound: () -> Unit,
 ) : PagingSource<Int, GitHubUser>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, GitHubUser> {
@@ -24,7 +22,7 @@ class GitHubPagingSource(
                     val users = response.body.items ?: emptyList()
 
                     if (currentPage == 1 && users.isEmpty()) {
-                        onNoRecordsFound() // Trigger the callback
+                        onNoRecordsFound()
                         return LoadResult.Page(
                             data = emptyList(),
                             prevKey = null,

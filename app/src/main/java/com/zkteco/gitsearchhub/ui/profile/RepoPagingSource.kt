@@ -17,8 +17,7 @@ class RepoPagingSource(
         val currentPage = params.key ?: 1
         return try {
             val page = params.key ?: 1
-            val response = apiService.getRepositories(reposUrl, page)
-            when (response) {
+            when (val response = apiService.getRepositories(reposUrl, page)) {
                 is NetworkResponse.Success -> {
                     val repos = response.body ?: emptyList()
                     Log.d("list", "load: thie items are ${repos.size}")
@@ -29,7 +28,7 @@ class RepoPagingSource(
                     )
                 }
                 is NetworkResponse.ApiError -> {
-                    LoadResult.Error(Throwable("API Error: ${response.body?.message}"))
+                    LoadResult.Error(Throwable("API Error: ${response.body.message}"))
                 }
                 is NetworkResponse.NetworkError -> {
                     LoadResult.Error(Throwable("Network Error"))
