@@ -11,8 +11,8 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        app:cardCornerRadius="8dp"
+        android:layout_margin="@dimen/_6sdp"
+        app:cardCornerRadius="@dimen/_6sdp"
         app:cardElevation="4dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -21,11 +21,11 @@
 
             <ImageView
                 android:id="@+id/ivAvatar"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
+                android:layout_width="@dimen/_45sdp"
+                android:layout_height="@dimen/_45sdp"
+                android:layout_marginStart="@dimen/_13sdp"
+                android:layout_marginTop="@dimen/_13sdp"
+                android:layout_marginBottom="@dimen/_13sdp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:imageUrl="@{user.avatar_url}"
                 app:layout_constraintStart_toStartOf="parent"
@@ -36,12 +36,12 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@{user.login}"
-                android:textSize="16sp"
+                android:textSize="@dimen/_13ssp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@id/ivAvatar"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="@dimen/_13sdp"
 
                 />
 

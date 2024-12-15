@@ -7,17 +7,52 @@
     android:background="@color/main_background_color"
     >
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/_14sdp"
+        android:paddingEnd="@dimen/_14sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/img_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:src="@drawable/ic_back"
+            app:flow_horizontalGap="@dimen/_45sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/title_tv"
+            style="@style/TitleTextStyle"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:text="@string/tv_details"
+            app:layout_constraintBottom_toBottomOf="@+id/img_back"
+            app:layout_constraintStart_toEndOf="@+id/img_back"
+            app:layout_constraintTop_toTopOf="@+id/img_back" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <ImageView
         android:id="@+id/ivAvatar"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_width="@dimen/_80sdp"
+        android:layout_height="@dimen/_80sdp"
+        android:layout_marginTop="@dimen/_25sdp"
+        android:layout_marginStart="@dimen/_14sdp"
+        android:layout_marginEnd="@dimen/_14sdp"
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cl_app_bar"
         android:src="@drawable/profile_pic" />
 
     <TextView
@@ -27,22 +62,22 @@
         android:text=""
         android:textSize="20sp"
         android:textColor="@android:color/black"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/_14sdp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ivAvatar"
-        android:paddingStart="16dp" />
+        android:paddingStart="@dimen/_14sdp" />
 
     <TextView
         android:id="@+id/tvBio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""
-        android:textSize="14sp"
+        android:textSize="@dimen/_12ssp"
         android:textColor="@android:color/darker_gray"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvUsername"
-        android:layout_marginTop="8dp"
-        android:paddingStart="16dp"
+        android:layout_marginTop="@dimen/_6sdp"
+        android:paddingStart="@dimen/_14sdp"
         android:maxLines="3"
         android:ellipsize="end" />
 
@@ -51,17 +86,17 @@
         android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/_14sdp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvBio"
-        android:paddingStart="16dp">
+        android:paddingStart="@dimen/_14sdp">
 
         <TextView
             android:id="@+id/tvFollowers"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Followers: 0"
-            android:textSize="16sp"
+            android:textSize="@dimen/_14ssp"
             android:textColor="@android:color/black"
             android:layout_marginEnd="24dp" />
 
@@ -70,7 +105,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Repos: 0"
-            android:textSize="16sp"
+            android:textSize="@dimen/_14ssp"
             android:textColor="@android:color/black" />
     </LinearLayout>
 
@@ -78,11 +113,11 @@
         android:id="@+id/recyclerViewRepos"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="@dimen/_14sdp"
+        android:layout_marginBottom="@dimen/_14sdp"
         app:layout_constraintTop_toBottomOf="@id/userStatsLayout"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp" />
+        android:paddingStart="@dimen/_14sdp"
+        android:paddingEnd="@dimen/_14sdp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

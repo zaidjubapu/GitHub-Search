@@ -7,6 +7,8 @@
     <string name="followers_text">Followers: %1$d</string>
     <string name="api_error">API Error: %1$s</string>
     <string name="unknown_error">Unknown Error: %1$s</string>
+    <string name="tv_details">User Details</string>
+
 
 
 

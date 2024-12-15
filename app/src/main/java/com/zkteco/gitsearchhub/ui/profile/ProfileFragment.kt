@@ -23,32 +23,42 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private lateinit var binding: FragmentProfileBinding
     private val profileViewModel: ProfileViewModel by viewModels()
     private lateinit var repoAdapter: RepoPagingAdapter
-    private var repoUrl: String? = null
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentProfileBinding.bind(view)
 
         val user: GitHubUser? = arguments?.getParcelable("user")
+        initializeAdapter()
 
-        repoAdapter = RepoPagingAdapter()
-        binding.recyclerViewRepos.adapter = repoAdapter
-        binding.recyclerViewRepos.layoutManager = LinearLayoutManager(requireContext())
+
 
         user?.let {
             binding.tvUsername.text = it.login
-            repoUrl = it.repos_url
             Glide.with(requireContext()).load(it.avatar_url).into(binding.ivAvatar)
-
             profileViewModel.fetchUserDetails(it.login)
+            observeRepoResults(it.repos_url)
         } ?: run {
             findNavController().navigateUp()
         }
 
         observeUserDetails()
+        onBackButtonClick()
 
-        repoUrl?.let { observeRepoResults(it) }
+
+    }
+
+    private fun onBackButtonClick() {
+        binding.imgBack.setOnClickListener{
+            findNavController().navigateUp()
+        }
+
+    }
+
+    private fun initializeAdapter(){
+        repoAdapter = RepoPagingAdapter()
+        binding.recyclerViewRepos.adapter = repoAdapter
+        binding.recyclerViewRepos.layoutManager = LinearLayoutManager(requireContext())
     }
 
     private fun observeRepoResults(url: String) {

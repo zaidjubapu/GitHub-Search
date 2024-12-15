@@ -70,5 +70,7 @@ dependencies {
     implementation(libs.retrofit.gson)
     implementation(libs.okhttp.logging.interceptor)
     implementation(libs.androidx.pagination)
+    implementation(libs.sdp.android)
+    implementation(libs.ssp.android)
 
 }
