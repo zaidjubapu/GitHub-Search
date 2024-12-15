@@ -11,7 +11,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.zkteco.gitsearchhub.R
 import com.zkteco.gitsearchhub.data.model.GitHubUser
-import com.zkteco.gitsearchhub.data.repository.SearchUserRepo
+import com.zkteco.gitsearchhub.data.repository.UserRepository
 import com.zkteco.gitsearchhub.utility.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -27,7 +27,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-    private val searchUserRepo: SearchUserRepo,
+    private val userRepository: UserRepository,
     private val resources: Resources
 ) : ViewModel() {
 
@@ -68,7 +68,7 @@ class SearchViewModel @Inject constructor(
                 enablePlaceholders = false
             ),
             pagingSourceFactory = {
-                GitHubPagingSource(searchUserRepo, query) {
+                GitHubPagingSource(userRepository, query) {
                     _toastMessage.postValue(resources.getString(R.string.no_records_found))
                 }
             }

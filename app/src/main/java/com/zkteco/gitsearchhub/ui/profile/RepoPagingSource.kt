@@ -4,12 +4,12 @@ import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.zkteco.gitsearchhub.data.model.GitHubRepo
-import com.zkteco.gitsearchhub.data.repository.SearchUserRepo
+import com.zkteco.gitsearchhub.data.repository.RepoRepository
 import com.zkteco.gitsearchhub.network.NetworkResponse
 
 
 class RepoPagingSource(
-    private val apiService: SearchUserRepo,
+    private val repoRepository: RepoRepository,
     private val reposUrl: String
 ) : PagingSource<Int, GitHubRepo>() {
 
@@ -17,7 +17,7 @@ class RepoPagingSource(
         val currentPage = params.key ?: 1
         return try {
             val page = params.key ?: 1
-            when (val response = apiService.getRepositories(reposUrl, page)) {
+            when (val response = repoRepository.getRepositories(reposUrl, page)) {
                 is NetworkResponse.Success -> {
                     val repos = response.body ?: emptyList()
                     Log.d("list", "load: thie items are ${repos.size}")

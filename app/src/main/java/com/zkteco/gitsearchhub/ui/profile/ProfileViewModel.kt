@@ -13,7 +13,8 @@ import androidx.paging.cachedIn
 import com.zkteco.gitsearchhub.R
 import com.zkteco.gitsearchhub.data.model.GitHubRepo
 import com.zkteco.gitsearchhub.data.model.GitHubUserDetails
-import com.zkteco.gitsearchhub.data.repository.SearchUserRepo
+import com.zkteco.gitsearchhub.data.repository.RepoRepository
+import com.zkteco.gitsearchhub.data.repository.UserRepository
 import com.zkteco.gitsearchhub.network.NetworkResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -24,7 +25,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val searchUserRepo: SearchUserRepo,
+    private val userRepo: UserRepository,
+    private val repoRepository: RepoRepository,
     private val resources: Resources
 ) : ViewModel() {
 
@@ -39,14 +41,14 @@ class ProfileViewModel @Inject constructor(
                 pageSize = 20,
                 enablePlaceholders = false
             ),
-            pagingSourceFactory = { RepoPagingSource(searchUserRepo, url) }
+            pagingSourceFactory = { RepoPagingSource(repoRepository, url) }
         ).flow.cachedIn(viewModelScope)
     }
 
     fun fetchUserDetails(username: String) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val response = searchUserRepo.getUserDetail(username)
+                val response = userRepo.getUserDetail(username)
                 when (response) {
                     is NetworkResponse.Success -> {
                         response.body.let {
